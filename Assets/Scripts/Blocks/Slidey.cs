@@ -5,6 +5,7 @@ public class Slidey : Block
     protected override void FinishMove()
     {
         base.FinishMove();
+
         Slide(moveChange.x, moveChange.y);
     }
 
@@ -12,5 +13,4 @@ public class Slidey : Block
     {
         CheckMove(_deltaX, _deltaY);
     }
-
 }

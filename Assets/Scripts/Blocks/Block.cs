@@ -179,7 +179,7 @@ public class Block : MonoBehaviour
     /// <summary>
     /// Checks if the provided coordinates are within the grid
     /// </summary>
-    private bool InGrid(int _newX, int _newY)
+    protected bool InGrid(int _newX, int _newY)
     {
         if (_newX >= 0 && _newX < gridManager.gridList.Count &&
             _newY >= 0 && _newY < gridManager.gridList[0].Count) return true;
@@ -207,5 +207,5 @@ public class Block : MonoBehaviour
 
     protected virtual void GridChanged(){}
 
-    #endregion 
+    #endregion
 }

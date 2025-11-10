@@ -25,7 +25,7 @@ public class GridManager : MonoBehaviour
     [Tooltip("How far above the floor we should check for blocks.")]
     private float raycastCheckY;
 
-    private Vector2 gridSize;
+    public Vector2 gridSize;
 
     [Header("Debug settings")]
     [SerializeField]
