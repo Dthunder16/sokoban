@@ -30,8 +30,12 @@ public class GameManager : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip winSoundEffect;
     [SerializeField] private AudioClip startSoundEffect;
+    [SerializeField] private AudioClip moveSoundEffect;
+
     private AudioSource audioSource;
     private bool audioPlayed = false;
+
+    
 
     // Starting positions
     [SerializeField] private Vector2Int redStartPos = new Vector2Int(1, 4);
@@ -141,7 +145,7 @@ public class GameManager : MonoBehaviour
 
             Debug.Log("🎉 Level Complete!");
 
-            StartCoroutine(NextLevelAfterDelay(0.7f));
+            StartCoroutine(NextLevelAfterDelay(1.8f));
         }
     }
 
@@ -150,6 +154,9 @@ public class GameManager : MonoBehaviour
     {
         if(redBlock != null && blueBlock != null)
             CheckWinCondition();
+
+        if (moveSoundEffect != null && audioSource != null)
+            audioSource.PlayOneShot(moveSoundEffect);
     }
 
     private System.Collections.IEnumerator NextLevelAfterDelay(float delay)

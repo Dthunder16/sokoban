@@ -7,12 +7,17 @@ public class Breakable : Block
     [SerializeField] private GameObject breakEffectPrefab;
     [SerializeField] private GameManager gameManager;
 
+    //Break Sound
+    [SerializeField] private AudioClip breakSoundEffect;
+
+    private AudioSource audioSource;
+
     private int currentPushes = 0;
     private bool pushedByPlayer = false;
 
     protected override void StartMove(Cell newParent, int _deltaX, int _deltaY)
     {
-        // Check if pushed by player
+        //Check if pushed by player
         int behindX = gridPos.x - _deltaX;
         int behindY = gridPos.y - _deltaY;
 
@@ -28,17 +33,17 @@ public class Breakable : Block
             }
         }
 
-        // Clear target on old cell
+        //Clear target on old cell
         Cell oldCell = gridManager.gridList[gridPos.x][gridPos.y].GetComponent<Cell>();
         Target oldTarget = oldCell.GetComponentInChildren<Target>();
         if (oldTarget != null) oldTarget.SetOccupied(false);
 
-        // Move block and update gridPos
+        //Move block and update gridPos
         base.StartMove(newParent, _deltaX, _deltaY);
 
         Debug.Log($"{gameObject.name} moved to grid position: {gridPos}");
 
-        // Notify GameManager
+        //Notify GameManager 
         gameManager?.OnBlockMoved();
     }
 
@@ -46,6 +51,7 @@ public class Breakable : Block
     {
         if (pushedByPlayer)
         {
+            audioSource.PlayOneShot(breakSoundEffect);
             currentPushes++;
             if (currentPushes >= maxPushes)
             {
@@ -66,26 +72,24 @@ public class Breakable : Block
         Destroy(gameObject);
     }
 
-    // -------------------------------
-    // Reset block to a start position
-    // -------------------------------
+    //Reset block to a start position
     public void ResetToStart(Vector2Int startPos)
     {
-        // Remove from old cell if valid
+        //Remove the cell position from the grid
         if (gridPos != Vector2Int.zero)
         {
             Cell oldCell = gridManager.gridList[gridPos.x][gridPos.y].GetComponent<Cell>();
             oldCell.RemoveContainObj();
         }
 
-        // Update gridPos
+        //Update gridPos
         gridPos = startPos;
 
-        // Place in new cell
+        //Place in new cell
         Cell newCell = gridManager.gridList[gridPos.x][gridPos.y].GetComponent<Cell>();
         newCell.ContainObj = gameObject;
 
-        // Update visual
+        //Update visual
         transform.position = newCell.transform.position;
     }
 }
